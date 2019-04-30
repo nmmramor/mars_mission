@@ -9,14 +9,26 @@ mars_collection = client.mars_db.mars_mission
 
 @app.route("/scrape")
 def scrape_data():
-    scraped = scrape_mars.scrape()
-    mars_collection.insert_one(scraped)
+    scraped = populate_mars_data()
     
+    return render_template("index.html", mars=scraped)
+
+
+def populate_mars_data():
+    scraped = scrape_mars.scrape()
+    
+    mars_collection.update({}, scraped, upsert=True)
     return scraped
+
 
 @app.route("/")
 def index():
     mars = mars_collection.find_one()
+    
+    # if there's no data in the database, initialize it.
+    if mars is None:
+        mars = populate_mars_data()
+    
     return render_template("index.html", mars=mars)
 
 

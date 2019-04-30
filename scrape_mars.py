@@ -93,14 +93,14 @@ def get_hemisphere_data(browser):
             browser.visit(sub_url)
             sub_soup = bs(browser.html, 'html.parser')
             
-            # find the link to the high def image by finding the link that says "Original" on the page
-            original_link = sub_soup.find("a", string="Original")
-            original_image_url = original_link.get("href")
+            # find the link to the high def image by finding the link that says "Sample" on the page
+            sample_link = sub_soup.find("a", string="Sample")
+            sample_image_url = sample_link.get("href")
             
             # add the results to our url list
             hem_dict = {}
             hem_dict["title"] = hem_name
-            hem_dict["img_url"] = original_image_url
+            hem_dict["img_url"] = sample_image_url
             hem_img_urls.append(hem_dict)
     
     return hem_img_urls
